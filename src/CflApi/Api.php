@@ -41,7 +41,7 @@ class Api
 	 *
 	 * @return CflApi
 	 */
-	protected function _buildRequest(&$payload = null): CflApi
+	protected function _buildRequest(&$payload = null): \CflApi\API
 	{
 		$this->_connection = curl_init();
 		curl_setopt($this->_connection, CURLOPT_HTTPHEADER, ["Content-Type: {$this->_defaultContentType}"]);
