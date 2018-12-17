@@ -138,11 +138,13 @@ XML;
 XML;
 		}
 
-		// Load string into XML, json encode, then  decode as an array
+		// Load string into XML, json encode, then decode as an array
 		$response = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
-		$response = json_encode($response);
+		$response = json_decode(json_encode($response), true);
 
-		return json_decode($response, true);
+		$response['HttpCode'] = $httpCode;
+
+		return $response;
 	}
 
 
