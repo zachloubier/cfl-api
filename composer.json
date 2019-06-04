@@ -1,5 +1,5 @@
 {
-	"name": "zachloubier/cflapi",
+	"name": "zachloubier/cfl-api",
 	"description": "Package for interacting with the CFL API.",
 	"license": "MIT",
 	"authors": [
