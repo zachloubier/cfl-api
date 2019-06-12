@@ -6,7 +6,36 @@ class Api
 {
 	const REQUEST_ID_PREFIX = 'SO';
 
+	const REPONSE_CODE_SUCCESS_ITEM_CREATED           = 'S71';
+	const REPONSE_CODE_SUCCESS_ITEM_UPDATED           = 'S72';
+	const REPONSE_CODE_SUCCESS_ITEM_DELETED           = 'S73';
+	const REPONSE_CODE_ERROR_ITEM_EXISTS              = 'F71';
+	const REPONSE_CODE_ERROR_ITEM_MISSING             = 'F72';
+	const REPONSE_CODE_ERROR_ORDER_EXISTS             = 'F73';
+	const REPONSE_CODE_ERROR_STOCK_EXISTS             = 'F74';
+	const REPONSE_CODE_ERROR_ORDER_AND_STOCK_EXIST    = 'F75';
+	const REPONSE_CODE_ERROR_ITEM_CHANGE_TO_CF_DENIED = 'F76';
+	const REPONSE_CODE_ERROR_INVALID_INPUT_FIELD      = 'F77';
+	const REPONSE_CODE_ERROR_UNCLASSIFIED             = 'F79';
+
+	const RESPONSE_CODE_DESCRIPTIONS = [
+		self::REPONSE_CODE_SUCCESS_ITEM_CREATED           => 'Item has been created',
+		self::REPONSE_CODE_SUCCESS_ITEM_UPDATED           => 'Item has been updated',
+		self::REPONSE_CODE_SUCCESS_ITEM_DELETED           => 'Item has been deleted',
+		self::REPONSE_CODE_ERROR_ITEM_EXISTS              => 'Item already exists, it could not be created',
+		self::REPONSE_CODE_ERROR_ITEM_MISSING             => 'Item does not exist, it could not be updated/deleted',
+		self::REPONSE_CODE_ERROR_ORDER_EXISTS             => 'Item could not be deleted (order exists)',
+		self::REPONSE_CODE_ERROR_STOCK_EXISTS             => 'Item could not be deleted (stock exists)',
+		self::REPONSE_CODE_ERROR_ORDER_AND_STOCK_EXIST    => 'Item could not be deleted (order and stock exists)',
+		self::REPONSE_CODE_ERROR_ITEM_CHANGE_TO_CF_DENIED => 'RTW/PO item could not be changed to CF',
+		self::REPONSE_CODE_ERROR_INVALID_INPUT_FIELD      => 'Invalid value provided',
+		self::REPONSE_CODE_ERROR_UNCLASSIFIED             => 'Unclassified error',
+	];
+
 	protected $_connection;
+	protected $_lastResponse = [];
+	protected $_lastResponseCode = '';
+	protected $_lastResponseCodeDescription = '';
 
 	protected $_baseUrl;
 	protected $_apiKey;
@@ -35,11 +64,69 @@ class Api
 	}
 
 	/**
+	 * Was response code success? If first char is 'S', this means success
+	 *
+	 * @param $responseCode
+	 *
+	 * @return bool
+	 */
+	protected function _getResponseCodeSuccess(string $responseCode): bool
+	{
+		return (bool) ('S' == substr($responseCode,0,1));
+	}
+
+	/**
+	 * Return description of response code
+	 *
+	 * @param $responseCode
+	 *
+	 * @return string
+	 */
+	protected function _getResponseCodeDescription(string $responseCode): string
+	{
+		if (array_key_exists($responseCode, self::RESPONSE_CODE_DESCRIPTIONS)) {
+			return self::RESPONSE_CODE_DESCRIPTIONS[$responseCode];
+		} else {
+			return "Unknown response code: $responseCode";
+		}
+	}
+
+	/**
+	 * Return last response code description
+	 *
+	 * @return string
+	 */
+	public function getLastResponseCodeDescription(): string
+	{
+		return $this->_lastResponseCodeDescription;
+	}
+
+	/**
+	 * Return last response code description
+	 *
+	 * @return string
+	 */
+	public function getLastResponseCode(): string
+	{
+		return $this->_lastResponseCode;
+	}
+
+	/**
+	 * Return last response XML reformatted as an array
+	 *
+	 * @return array
+	 */
+	public function getLastResponse(): array
+	{
+		return $this->_lastResponse;
+	}
+
+	/**
 	 * Build the CURL request
 	 *
 	 * @param null $payload
 	 *
-	 * @return CflApi
+	 * @return \CflApi\API
 	 */
 	protected function _buildRequest(&$payload = null): \CflApi\API
 	{
@@ -52,6 +139,7 @@ class Api
 		$time      = date('c');
 
 		$payload = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
 <Request>
 	<Auth>
 		<user_code><![CDATA[{$this->_apiUserId}]]></user_code>
@@ -59,7 +147,7 @@ class Api
 	</Auth>
 	<RequestID><![CDATA[{$requestId}]]></RequestID>
 	<RequestDate><![CDATA[{$time}]]></RequestDate>
-	{$payload}
+{$payload}
 </Request>
 XML;
 
@@ -75,7 +163,7 @@ XML;
 	 *
 	 * @return array
 	 */
-	protected function _request(string $endpoint, string $method, $payload = null): array
+	protected function _request(string $endpoint, string $method, $payload = null): bool
 	{
 		$this->_buildRequest($payload);
 
@@ -114,37 +202,38 @@ XML;
 	 *
 	 * @param string $response
 	 *
-	 * @return array
+	 * @return bool
 	 */
-	protected function _processResponse(string $response): array
+	protected function _processResponse(string $response): bool
 	{
 		$httpCode = curl_getinfo($this->_connection, CURLINFO_HTTP_CODE);
 
-		// If a 5xx error was returned or the response is empty, create a fake response
+		// If a 5xx error was returned or the response is empty, return failure
 		if ($httpCode >= 500 || empty($response)) {
 			$curlError = curl_error($this->_connection);
-			$response  = <<<XML
-<Response>
-	<ResponseStatus>FAIL</ResponseStatus>
-	<ResponseMessage>{$curlError}</ResponseMessage>
-	<PreStockOuts>
-		<PreStockOut>
-			<RequestSeq>1</RequestSeq>
-			<ProcessStatus>FAIL</ProcessStatus>
-			<ProcessMessage>{$curlError}</ProcessMessage>
-		</PreStockOut>
-	</PreStockOuts>
-</Response>
-XML;
+			$this->_lastResponseCodeDescription = $curlError;
+			$this->_lastResponseCode = (string)$httpCode;
+			return false;
 		}
 
 		// Load string into XML, json encode, then decode as an array
 		$response = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
-		$response = json_decode(json_encode($response), true);
-
-		$response['HttpCode'] = $httpCode;
-
-		return $response;
+		$this->_lastResponse = $response = (array)json_decode(json_encode($response), true);
+		$status = false;
+		if (empty($response['ResponseID'])) {
+			throw new Exception("Invalid response:" . print_r($response, true));
+		} else {
+			if (empty($response['ResponseStatus'])) {
+				$this->_lastResponseCode = (string)$httpCode;
+				$this->_lastResponseCodeDescription = '';
+				$status = true;
+			} else {
+				$this->_lastResponseCode            = (string)$response['ResponseStatus'];
+				$this->_lastResponseCodeDescription = $this->_getResponseCodeDescription($response['ResponseStatus']);
+				$status = $this->_getResponseCodeSuccess($response['ResponseStatus']);
+			}
+		}
+		return $status;
 	}
 
 
@@ -157,9 +246,9 @@ XML;
 	 * @param string $endpoint
 	 * @param string $payload
 	 *
-	 * @return array
+	 * @return bool
 	 */
-	protected function _post(string $endpoint, string $payload): array
+	protected function _post(string $endpoint, string $payload): bool
 	{
 		$data = $this->_request($endpoint, 'post', $payload);
 
@@ -195,7 +284,95 @@ XML;
 </SearchingCriteria>
 XML;
 
-		return $this->_post('InventoryService.asmx/Inventory', $payload);
+		$this->_post('InventoryService.asmx/Inventory', $payload);
+
+		return $this->_lastResponse;
+	}
+
+	/**
+	 * Generate XML payload to create a new item or update an existing item in CFL
+	 *
+	 * @param string  $itemNumber
+	 * @param array   $itemInfo
+	 * @param boolean $isUpdate
+	 *
+	 * @return string
+	 */
+	protected function _generateCreateOrUpdateItemPayload(string $itemNumber, array $itemInfo, bool $isUpdate = false): string
+	{
+		$transactionType = $isUpdate ? 'UPDATE' : 'NEW';
+
+		if (!isset($itemInfo['FreeText1']))
+			throw new Exception("ItemStatus not specified for item $itemNumber");
+
+		$payload = <<<XML
+   <ItemMaster>
+      <TransactionType><![CDATA[{$transactionType}]]></TransactionType>
+      <ItemNumber><![CDATA[{$itemNumber}]]></ItemNumber>
+      <RequestSeq>1</RequestSeq>
+	<Customer><![CDATA[{$this->_customerCode}]]></Customer>
+	<Warehouse><![CDATA[{$this->_warehouseCode}]]></Warehouse>
+
+XML;
+		foreach ($itemInfo as $key => $value) {
+			$payload .= <<<XML
+      <{$key}><![CDATA[{$value}]]></{$key}>
+
+XML;
+		}
+
+		$payload .= <<<XML
+   </ItemMaster>
+
+XML;
+		return $payload;
+	}
+
+	/**
+	 * Create a new item or update an existing item in CFL
+	 *
+	 * @param string $itemNumber
+	 * @param array  $itemInfo
+	 *
+	 * @return bool
+	 */
+	public function createOrUpdateItem(string $itemNumber, array $itemInfo): bool
+	{
+		// First attempt to create the item
+		$payload = $this->_generateCreateOrUpdateItemPayload($itemNumber, $itemInfo, false);
+		$status = $this->_post('ItemMasterService.asmx/Manage', $payload);
+		if (!$status) {
+			// If we get back a respone code telling us that the item already exists
+			if ($this->_lastResponseCode == self::REPONSE_CODE_ERROR_ITEM_EXISTS) {
+				// Try updating the item
+				$payload = $this->_generateCreateOrUpdateItemPayload($itemNumber, $itemInfo, true);
+				$status = $this->_post('ItemMasterService.asmx/Manage', $payload);
+			}
+		}
+		// Return success/failure status
+		return $status;
+	}
+
+	/**
+	 * Create a new item or update an existing item in CFL
+	 *
+	 * @param string $itemNumber
+	 *
+	 * @return bool
+	 */
+	public function deleteItem(string $itemNumber): bool
+	{
+		$payload = <<<XML
+   <ItemMaster>
+      <RequestSeq>1</RequestSeq>
+      <TransactionType>DELETE</TransactionType>
+      <Customer><![CDATA[{$this->_customerCode}]]></Customer>
+      <ItemNumber><![CDATA[{$itemNumber}]]></ItemNumber>
+   </ItemMaster>
+
+XML;
+
+		return $this->_post('ItemMasterService.asmx/Manage', $payload);
 	}
 
 
@@ -211,7 +388,8 @@ XML;
 	 */
 	public function createOrder(string $payload): array
 	{
-		return $this->_post('PDOWebService.asmx/PushOrder', $payload);
+		$this->_post('PDOWebService.asmx/PushOrder', $payload);
+		return $this->_lastResponse;
 	}
 
 	/**
@@ -223,7 +401,8 @@ XML;
 	 */
 	public function updateOrder(string $payload): array
 	{
-		return $this->_post('PDOWebService.asmx/PushOrder', $payload);
+		$this->_post('PDOWebService.asmx/PushOrder', $payload);
+		return $this->_lastResponse;
 	}
 
 	/**
@@ -235,6 +414,8 @@ XML;
 	 */
 	public function cancelOrder(string $payload): array
 	{
-		return $this->_post('PDOWebService.asmx/PushOrder', $payload);
+		$this->_post('PDOWebService.asmx/PushOrder', $payload);
+		return $this->_lastResponse;
+
 	}
 }
