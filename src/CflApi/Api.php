@@ -258,15 +258,17 @@ XML;
 	}
 
 
-	/* ======= Product Functions ======= */
+	/* ======= Product/Item Functions ======= */
 
 
 	/**
 	 * Get all products from CFL
 	 *
+	 * @param string $itemNumber
+	 *
 	 * @return array
 	 */
-	public function getProducts(): array
+	public function getItems(string $itemNumber = null): array
 	{
 		$time = date('c');
 
