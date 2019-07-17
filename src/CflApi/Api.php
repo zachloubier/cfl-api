@@ -283,7 +283,20 @@ XML;
 	<Value1><![CDATA[{$this->_customerCode}]]></Value1>
 	<Criteria2>Warehouse</Criteria2>
 	<Value2><![CDATA[{$this->_warehouseCode}]]></Value2>
+
+XML;
+
+		if ($itemNumber) {
+			$payload .= <<<XML
+	<Criteria3>ItemNumber</Criteria3>
+	<Value3><![CDATA[{$itemNumber}]]></Value3>
+
+XML;
+		}
+
+		$payload .= <<<XML
 </SearchingCriteria>
+
 XML;
 
 		$this->_post('InventoryService.asmx/Inventory', $payload);
