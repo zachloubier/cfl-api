@@ -221,7 +221,7 @@ XML;
 		$this->_lastResponse = $response = (array)json_decode(json_encode($response), true);
 		$status = false;
 		if (empty($response['ResponseID'])) {
-			throw new Exception("Invalid response:" . print_r($response, true));
+			throw new \Exception("Invalid response:" . print_r($response, true));
 		} else {
 			if (empty($response['ResponseStatus'])) {
 				$this->_lastResponseCode = (string)$httpCode;
@@ -318,7 +318,7 @@ XML;
 		$transactionType = $isUpdate ? 'UPDATE' : 'NEW';
 
 		if (!isset($itemInfo['FreeText1']))
-			throw new Exception("ItemStatus not specified for item $itemNumber");
+			throw new \Exception("ItemStatus not specified for item $itemNumber");
 
 		$payload = <<<XML
    <ItemMaster>
