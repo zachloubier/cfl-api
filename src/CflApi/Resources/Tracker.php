@@ -7,6 +7,7 @@ use CflApi\Traits;
 class Tracker extends Resource
 {
 	use Traits\Retrieve;
+	use Traits\RetrieveCollection;
 	use Traits\Create;
 
 	protected function _construct()

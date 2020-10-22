@@ -17,6 +17,14 @@ abstract class Resource extends RestApi
 	abstract public function retrieve($identifier): array;
 
 	/**
+	 * Retrieve all resources in CFL.
+	 *
+	 * @return array
+	 * @throws \GuzzleHttp\Exception\RequestException
+	 */
+	abstract public function retrieveCollection(): array;
+
+	/**
 	 * Create a single resource in CFL.
 	 *
 	 * @param array $data
