@@ -26,7 +26,7 @@ class Inventory extends Resource
 	 */
 	protected function _construct()
 	{
-		$this->_setPath("Inventory");
+		$this->_setPath("inventory");
 	}
 
 	/**
@@ -39,7 +39,7 @@ class Inventory extends Resource
 	 */
 	public function retrieve($identifier): array
 	{
-		$this->_setPath("Inventory");
+		$this->_setPath("inventory");
 
 		return $this->traitRetrieve($identifier);
 	}
@@ -52,37 +52,34 @@ class Inventory extends Resource
 	 */
 	public function retrieveCollection(): array
 	{
-		$this->_setPath("Inventory");
+		$this->_setPath("inventory");
 
 		return $this->traitRetrieveCollection();
 	}
 
 	/**
-	 * Not implemented
-	 */
-	public function create(array $data): array
-	{
-		return [];
-	}
-
-	/**
-	 * Update a single item in CFL.
+	 * Add or subtract inventory from single item in CFL.
 	 *
-	 * @param        $itemNumber
 	 * @param array  $data
 	 *
 	 * @return array
 	 * @throws \GuzzleHttp\Exception\RequestException
 	 */
+	public function create(array $data): array
+	{
+		$this->_setPath("inventory/PreQty/update");
+
+		$payload = $this->_generateCreateUpdateDeleteItemPayload($data);
+
+		return $this->traitCreate($payload);
+	}
+
+	/**
+	 * Not implemented. create() does everything.
+	 */
 	public function update($itemNumber, array $data): array
 	{
-		$this->_setPath("Inventory/PreQty/update");
-
-		$data['itemNumber'] = $itemNumber;
-		$data['qty']        = $data['qty'];
-		$payload            = $this->_generateCreateUpdateDeleteItemPayload($data);
-
-		return $this->traitUpdate($payload);
+		return [];
 	}
 
 	/**
@@ -102,13 +99,9 @@ class Inventory extends Resource
 	 */
 	protected function _generateCreateUpdateDeleteItemPayload(array $data): array
 	{
-		return [
-			"RequestID" => $this->_generateRequestId(),
-			"Customer"  => $this->_customerCode,
-			"Item"      => [
-				$data,
-			],
-		];
+		$data["RequestID"] = $this->_generateRequestId();
+		$data["Customer"]  = $this->_customerCode;
+		return $data;
 	}
 
 	protected function _getErrorCodeDescriptions(): array

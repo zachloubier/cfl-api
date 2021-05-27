@@ -55,25 +55,26 @@ class ItemMaster extends Resource
 	public function update($itemNumber, array $data): array
 	{
 		$data['ItemNumber'] = $itemNumber;
-		$payload            = $this->_generateCreateUpdateDeleteItemPayload($data);
+
+		// If single item update and data array is not sequential, make it so
+		if (array_keys($data) !== range(0, count($data) - 1))
+			$data = [ $data ];
+
+		$payload = $this->_generateCreateUpdateDeleteItemPayload($data);
 
 		return $this->traitUpdate($payload);
 	}
 
 	/**
-	 * Delete a single item in CFL.
+	 * Delete a multiple items in CFL.
 	 *
 	 * @param $itemNumber
 	 *
 	 * @return array
 	 * @throws \GuzzleHttp\Exception\RequestException
 	 */
-	public function delete($itemNumber): array
+	public function delete($data): array
 	{
-		$data     = [
-			'ItemNumber' => $itemNumber,
-			'Status'     => true,
-		];
 		$itemData = $this->_generateCreateUpdateDeleteItemPayload($data);
 
 		return $this->traitDelete($itemData);
@@ -91,9 +92,7 @@ class ItemMaster extends Resource
 		return [
 			"RequestID" => $this->_generateRequestId(),
 			"Customer"  => $this->_customerCode,
-			"Item"      => [
-				$data,
-			],
+			"Item"      => $data,
 		];
 	}
 
