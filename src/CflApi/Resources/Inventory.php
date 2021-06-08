@@ -19,6 +19,9 @@ class Inventory extends Resource
 		update as traitUpdate;
 	}
 
+	const UPDATE_TYPE_INCREMENT = 2;
+	const UPDATE_TYPE_REPLACE  = 3;
+
 	/**
 	 * Set the path for this resource.
 	 *
@@ -26,7 +29,7 @@ class Inventory extends Resource
 	 */
 	protected function _construct()
 	{
-		$this->_setPath("inventory");
+		$this->_setPath("Inventory");
 	}
 
 	/**
@@ -39,7 +42,7 @@ class Inventory extends Resource
 	 */
 	public function retrieve($identifier): array
 	{
-		$this->_setPath("inventory");
+		$this->_setPath("Inventory");
 
 		return $this->traitRetrieve($identifier);
 	}
@@ -52,12 +55,21 @@ class Inventory extends Resource
 	 */
 	public function retrieveCollection(): array
 	{
-		$this->_setPath("inventory");
+		$this->_setPath("Inventory");
 
 		return $this->traitRetrieveCollection();
 	}
 
 	/**
+	 * Not implemented. update() does everything.
+	 */
+	public function create(array $data): array
+	{
+		return [];
+	}
+
+	/**
+	 *
 	 * Add or subtract inventory from single item in CFL.
 	 *
 	 * @param array  $data
@@ -65,21 +77,22 @@ class Inventory extends Resource
 	 * @return array
 	 * @throws \GuzzleHttp\Exception\RequestException
 	 */
-	public function create(array $data): array
-	{
-		$this->_setPath("inventory/PreQty/update");
-
-		$payload = $this->_generateCreateUpdateDeleteItemPayload($data);
-
-		return $this->traitCreate($payload);
-	}
-
-	/**
-	 * Not implemented. create() does everything.
-	 */
 	public function update($itemNumber, array $data): array
 	{
-		return [];
+		$this->_setPath("Inventory/PreQty/update");
+
+		$newData = [];
+
+		$newData['Item'] = [
+			'itemNumber' => $itemNumber,
+			'qty'        => $data['qty'],
+		];
+
+		$newData['Type'] = $data['type'];
+
+		$payload = $this->_generateCreateUpdateDeleteItemPayload($newData);
+
+		return $this->traitUpdate($payload);
 	}
 
 	/**
