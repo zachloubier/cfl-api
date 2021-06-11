@@ -5,11 +5,11 @@ namespace CflApi\Traits;
 trait Retrieve
 {
 	/**
-	 * @param $identifier
+	 * @param string $identifier
 	 *
 	 * @return array
 	 */
-	public function retrieve($identifier): array
+	public function retrieve(string $identifier): array
 	{
 		$response = $this->get("{$this->_path}/{$identifier}");
 

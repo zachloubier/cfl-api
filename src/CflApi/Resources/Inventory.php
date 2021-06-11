@@ -20,7 +20,7 @@ class Inventory extends Resource
 	}
 
 	const UPDATE_TYPE_INCREMENT = 2;
-	const UPDATE_TYPE_REPLACE  = 3;
+	const UPDATE_TYPE_REPLACE   = 3;
 
 	/**
 	 * Set the path for this resource.
@@ -35,12 +35,12 @@ class Inventory extends Resource
 	/**
 	 * Retrieve a single resource in CFL.
 	 *
-	 * @param $identifier
+	 * @param string $identifier
 	 *
 	 * @return array
 	 * @throws \GuzzleHttp\Exception\RequestException
 	 */
-	public function retrieve($identifier): array
+	public function retrieve(string $identifier): array
 	{
 		$this->_setPath("Inventory");
 
@@ -72,19 +72,20 @@ class Inventory extends Resource
 	 *
 	 * Add or subtract inventory from single item in CFL.
 	 *
+	 * @param string $identifier
 	 * @param array  $data
 	 *
 	 * @return array
 	 * @throws \GuzzleHttp\Exception\RequestException
 	 */
-	public function update($itemNumber, array $data): array
+	public function update(string $identifier, array $data): array
 	{
 		$this->_setPath("Inventory/PreQty/update");
 
 		$newData = [];
 
 		$newData['Item'] = [
-			'itemNumber' => $itemNumber,
+			'itemNumber' => $identifier,
 			'qty'        => $data['qty'],
 		];
 
@@ -98,7 +99,7 @@ class Inventory extends Resource
 	/**
 	 * Not implemented
 	 */
-	public function delete($itemNumber): array
+	public function delete(string $identifier): array
 	{
 		return [];
 	}

@@ -46,15 +46,15 @@ class ItemMaster extends Resource
 	/**
 	 * Update a single item in CFL.
 	 *
-	 * @param        $itemNumber
+	 * @param string $identifier
 	 * @param array  $data
 	 *
 	 * @return array
 	 * @throws \GuzzleHttp\Exception\RequestException
 	 */
-	public function update($itemNumber, array $data): array
+	public function update(string $identifier, array $data): array
 	{
-		$data['ItemNumber'] = $itemNumber;
+		$data['ItemNumber'] = $identifier;
 
 		// If single item update and data array is not sequential, make it so
 		if (array_keys($data) !== range(0, count($data) - 1))
@@ -68,13 +68,18 @@ class ItemMaster extends Resource
 	/**
 	 * Delete a multiple items in CFL.
 	 *
-	 * @param $itemNumber
+	 * @param string $identifier
 	 *
 	 * @return array
 	 * @throws \GuzzleHttp\Exception\RequestException
 	 */
-	public function delete($data): array
+	public function delete(string $identifier): array
 	{
+		$data     = [
+            'ItemNumber' => $identifier,
+            'Status'     => true,
+        ];
+
 		$itemData = $this->_generateCreateUpdateDeleteItemPayload($data);
 
 		return $this->traitDelete($itemData);

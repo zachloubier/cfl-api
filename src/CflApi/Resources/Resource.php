@@ -9,12 +9,12 @@ abstract class Resource extends RestApi
 	/**
 	 * Retrieve a single resource in CFL.
 	 *
-	 * @param $identifier
+	 * @param string $identifier
 	 *
 	 * @return array
 	 * @throws \GuzzleHttp\Exception\RequestException
 	 */
-	abstract public function retrieve($identifier): array;
+	abstract public function retrieve(string $identifier): array;
 
 	/**
 	 * Retrieve all resources in CFL.
@@ -37,21 +37,21 @@ abstract class Resource extends RestApi
 	/**
 	 * Update a single resource in CFL.
 	 *
-	 * @param $identifier
+	 * @param string $identifier
 	 * @param array  $data
 	 *
 	 * @return array
 	 * @throws \GuzzleHttp\Exception\RequestException
 	 */
-	abstract public function update($identifier, array $data): array;
+	abstract public function update(string $identifier, array $data): array;
 
 	/**
 	 * Delete a single resource in CFL.
 	 *
-	 * @param $identifier
+	 * @param string $identifier
 	 *
 	 * @return array
 	 * @throws \GuzzleHttp\Exception\RequestException
 	 */
-	abstract public function delete($identifier): array;
+	abstract public function delete(string $identifier): array;
 }
