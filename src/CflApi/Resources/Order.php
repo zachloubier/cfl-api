@@ -6,17 +6,16 @@ use CflApi\Traits;
 
 class Order extends Resource
 {
-	use Traits\Retrieve {
-		retrieve as traitRetrieve;
-	}
-	use Traits\RetrieveCollection {
-		retrieveCollection as traitRetrieveCollection;
-	}
+	use Traits\Retrieve;
+	use Traits\RetrieveCollection;
 	use Traits\Create {
 		create as traitCreate;
 	}
 	use Traits\Update {
 		update as traitUpdate;
+	}
+	use Traits\Delete {
+		delete as traitDelete;
 	}
 
 	/**
@@ -27,30 +26,6 @@ class Order extends Resource
 	protected function _construct()
 	{
 		$this->_setPath("order");
-	}
-
-	/**
-	 * Retrieve a single resource in CFL.
-	 *
-	 * @param $identifier
-	 *
-	 * @return array
-	 * @throws \GuzzleHttp\Exception\RequestException
-	 */
-	public function retrieve($identifier): array
-	{
-		return $this->traitRetrieve($identifier);
-	}
-
-	/**
-	 * Retrieve all resources in CFL.
-	 *
-	 * @return array
-	 * @throws \GuzzleHttp\Exception\RequestException
-	 */
-	public function retrieveCollection(): array
-	{
-		return $this->traitRetrieveCollection();
 	}
 
 	/**

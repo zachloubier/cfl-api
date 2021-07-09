@@ -53,11 +53,11 @@ class Inventory extends Resource
 	 * @return array
 	 * @throws \GuzzleHttp\Exception\RequestException
 	 */
-	public function retrieveCollection(): array
+	public function retrieveCollection(array $identifiers = []): array
 	{
 		$this->_setPath("Inventory");
 
-		return $this->traitRetrieveCollection();
+		return $this->traitRetrieveCollection($identifiers);
 	}
 
 	/**

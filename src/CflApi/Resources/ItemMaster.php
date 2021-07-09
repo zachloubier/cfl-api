@@ -26,6 +26,8 @@ class ItemMaster extends Resource
 	protected function _construct()
 	{
 		$this->_setPath("ItemMaster");
+
+		$this->_setIdentifierKey('itemNumber');
 	}
 
 	/**

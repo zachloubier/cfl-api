@@ -6,6 +6,18 @@ use CflApi\RestApi;
 
 abstract class Resource extends RestApi
 {
+	protected $_identifierKey;
+
+	public function getIdentifierKey(): string
+	{
+		return $this->_identifierKey;
+	}
+
+	protected function _setIdentifierKey(string $identifierKey)
+	{
+		$this->_identifierKey = $identifierKey;
+	}
+
 	/**
 	 * Retrieve a single resource in CFL.
 	 *
