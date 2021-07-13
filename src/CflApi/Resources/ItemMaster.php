@@ -27,7 +27,7 @@ class ItemMaster extends Resource
 	{
 		$this->_setPath("ItemMaster");
 
-		$this->_setIdentifierKey('itemNumber');
+		$this->_setIdentifierKey('itemNumbers');
 	}
 
 	/**

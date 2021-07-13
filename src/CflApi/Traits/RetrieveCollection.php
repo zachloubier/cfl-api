@@ -10,17 +10,13 @@ trait RetrieveCollection
 	public function retrieveCollection(array $identifiers = []): array
 	{
 		if (count($identifiers)) {
-			$uri = "{$this->_path}?";
+			$params = [
+				$this->getIdentifierKey() => implode(',', $identifiers),
+			];
 
-			foreach ($identifiers as $identifier) {
-				$uri .= "{$this->getIdentifierKey()}={$identifier}&";
-			}
-
-			rtrim($uri, "&");
-
-			$response = $this->get($uri);
+			$response = $this->get($this->_path, $params);
 		} else {
-			$response = $this->get("{$this->_path}");
+			$response = $this->get($this->_path);
 		}
 
 		return $this->_processResponse($response);

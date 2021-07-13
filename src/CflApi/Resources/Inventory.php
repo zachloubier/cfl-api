@@ -30,6 +30,8 @@ class Inventory extends Resource
 	protected function _construct()
 	{
 		$this->_setPath("Inventory");
+
+		$this->_setIdentifierKey('itemNumbers');
 	}
 
 	/**
