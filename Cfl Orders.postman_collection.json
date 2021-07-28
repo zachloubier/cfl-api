@@ -1,0 +1,61 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Cfl Orders",
+		"_postman_id": "71d4ba71-c8b0-e176-0526-e9f2aa1ce168",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Order",
+			"request": {
+				"url": "{{cfl_order_url}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cfl_bearer_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"RequestID\":\"ABCHK_20201112_064\",\n   \"Customer\":\"betabrand\",\n   \"RefOrderId\":\"100222394440\",\n   \"RefOrderDate\":\"11\\/18\\/20\",\n   \"CustomerRef\":\"123456273\",\n   \"DeliveryMethod\":\"Flat Rate - Standard (5-7 Business Days)\",\n   \"Currency\":\"USD\",\n   \"SubTotal\":\"200\",\n   \"Discount\":\"0\",\n   \"ShippingFee\":\"0\",\n   \"Total\":\"200\",\n   \"PaymentMethod\":\"cryozonic_stripe\",\n   \"Email\":\"russell@betabrand.com\",\n   \"Tel\":\"6038013776\",\n   \"Notes\":\"Testing Order\",\n   \"ShippingAddress\":{\n      \"Name\":\"russell preston\",\n      \"FullAddress\":\"123 Steet St, San Francisco, CA 94110\",\n      \"Address1\":\"609 E 23rd St, Apt 106\",\n      \"Address2\":\"San Francisco\",\n      \"Address3\":\"California\",\n      \"City\":\"San Francisco\",\n      \"State\":\"California\",\n      \"CountryCode\":\"US\",\n      \"PostalCode\":\"94110\"\n   },\n   \"BillingAddress\":{\n      \"Name\":\"russell preston\",\n      \"FullAddress\":\"123 Steet St, San Francisco, CA 94110\",\n      \"Address1\":\"123 Steet St\",\n      \"Address2\":\"San Francisco\",\n      \"Address3\":\"California\",\n      \"City\":\"San Francisco\",\n      \"State\":\"California\",\n      \"CountryCode\":\"US\",\n      \"PostalCode\":\"94110\"\n   },\n   \"Details\":[\n      {\n         \"Sequence\":\"1\",\n         \"ItemNumber\":\"W2000-CFL-L000\",\n         \"ItemDescription\":\"Test product 1 - Medium\",\n         \"Qty\":\"2\",\n         \"UnitPrice\":\"50\"\n      },\n      {\n         \"Sequence\":\"2\",\n         \"ItemNumber\":\"W1437-MALW-XLSP\",\n         \"ItemDescription\":\"Test product 1 - Medium\",\n         \"Qty\":\"2\",\n         \"UnitPrice\":\"50\"\n      }\n   ]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update Order",
+			"request": {
+				"url": "{{cfl_order_url}}/100222394440",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cfl_bearer_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"RequestID\":\"ABCHK_20201112_064\",\n   \"Customer\":\"betabrand\",\n   \"RefOrderId\":\"100222394440\",\n   \"RefOrderDate\":\"11\\/18\\/20\",\n   \"CustomerRef\":\"123456273\",\n   \"DeliveryMethod\":\"Flat Rate - Standard (5-7 Business Days)\",\n   \"Currency\":\"USD\",\n   \"SubTotal\":\"200\",\n   \"Discount\":\"0\",\n   \"ShippingFee\":\"0\",\n   \"Total\":\"200\",\n   \"PaymentMethod\":\"cryozonic_stripe\",\n   \"Email\":\"russell@betabrand.com\",\n   \"Tel\":\"6038013776\",\n   \"Notes\":\"Testing Order\",\n   \"ShippingAddress\":{\n      \"Name\":\"russell preston\",\n      \"FullAddress\":\"123 Steet St, San Francisco, CA 94110\",\n      \"Address1\":\"609 E 23rd St, Apt 106\",\n      \"Address2\":\"San Francisco\",\n      \"Address3\":\"California\",\n      \"City\":\"San Francisco\",\n      \"State\":\"California\",\n      \"CountryCode\":\"US\",\n      \"PostalCode\":\"94110\"\n   },\n   \"BillingAddress\":{\n      \"Name\":\"russell preston\",\n      \"FullAddress\":\"123 Steet St, San Francisco, CA 94110\",\n      \"Address1\":\"123 Steet St\",\n      \"Address2\":\"San Francisco\",\n      \"Address3\":\"California\",\n      \"City\":\"San Francisco\",\n      \"State\":\"California\",\n      \"CountryCode\":\"US\",\n      \"PostalCode\":\"94110\"\n   },\n   \"Details\":[\n      {\n         \"Sequence\":\"1\",\n         \"ItemNumber\":\"W2000-CFL-L000\",\n         \"ItemDescription\":\"Test product 1 - Medium\",\n         \"Qty\":\"2\",\n         \"UnitPrice\":\"50\"\n      },\n      {\n         \"Sequence\":\"2\",\n         \"ItemNumber\":\"W1437-MALW-XLSP\",\n         \"ItemDescription\":\"Test product 1 - Medium\",\n         \"Qty\":\"2\",\n         \"UnitPrice\":\"50\"\n      }\n   ]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
