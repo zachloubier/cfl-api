@@ -29,7 +29,7 @@ class Order extends Resource
 	}
 
 	/**
-	 * Update a single order in CFL.
+	 * Create a single order in CFL.
 	 */
 	public function create(array $data): array
 	{
@@ -39,15 +39,15 @@ class Order extends Resource
 	}
 
 	/**
-	 * Update a single item in CFL.
+	 * Update an order in CFL.
 	 *
-	 * @param        $itemNumber
+	 * @param        $orderNumber
 	 * @param array  $data
 	 *
 	 * @return array
 	 * @throws \GuzzleHttp\Exception\RequestException
 	 */
-	public function update($orderNumber, array $data): array
+	public function update(string $orderNumber, array $data): array
 	{
 		$this->_setPath("order/${orderNumber}");
 
@@ -59,7 +59,7 @@ class Order extends Resource
 	/**
 	 * Cancel an order in CFL.
 	 */
-	public function delete($orderNumber): array
+	public function delete(string $orderNumber): array
 	{
 		$this->_setPath("order/${orderNumber}");
 		return $this->traitDelete([]);
