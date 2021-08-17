@@ -5,7 +5,7 @@ use CflApi\Resources\Tracker;
 use CflApi\Resources\Order;
 require_once('./vendor/autoload.php');
 $token          = 'cJnmuMSniJnWSOoWsSfdljghdvES3zW379grLWFTuQEcuQWKy1';
-$baseUrl        = 'https://cfl-lpm.azurewebsites.net/api/';
+$baseUrl        = 'https://cfllpm-stg.azurewebsites.net/api/';
 $customerCode   = 'betabrand';
 $trackerToken   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOiIxNTg1NzEwMDMxIiwiZXhwIjoyMDkwNjMxNjMxLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQkVUQSIsImlzcyI6IkNGTCIsImF1ZCI6ImN1c3RvbWVyIn0.R66-RBSK6w7V6u2BpjH7PaerFzM-GQeHCmT7fm5qM0w';
 $trackerBaseUrl = 'https://cfldev.eastasia.cloudapp.azure.com:8077/api/';
@@ -191,7 +191,7 @@ try {
 	// print("Response:\n\n" . json_encode($itemMaster->delete($deleteItems), JSON_PRETTY_PRINT)); //Reject request.
 	// // Test Case A.13 - Customer update an item that belongs to another customer
 	// $token          = 'cJnmuMSniJnWSOoWsSfdljghdvES3zW379grLWFTuQEcuQWKy1';
-	// $baseUrl        = 'https://cfl-lpm.azurewebsites.net/api/';
+	// $baseUrl        = 'https://cfllpm-stg.azurewebsites.net/api/;
 	// $itemMaster     = new ItemMaster($token, $baseUrl, 'CUSTOMERA');
 	// print("Response:\n\n" . json_encode($itemMaster->update('W2000-CFL-M888', [ 'Status' => true ]), JSON_PRETTY_PRINT)); //Reject request.
 	// // Test Case A.14 - Volume test: Customer push 100 items to CFL in a single request. Record time spent in test environment.
