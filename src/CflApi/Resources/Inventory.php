@@ -63,11 +63,31 @@ class Inventory extends Resource
 	}
 
 	/**
-	 * Not implemented. update() does everything.
+	 *
+	 * (Re-)set inventory from single item in CFL.
+	 *
+	 * @param string $identifier
+	 * @param array  $data
+	 *
+	 * @return array
+	 * @throws \GuzzleHttp\Exception\RequestException
 	 */
 	public function create(array $data): array
 	{
-		return [];
+		$this->_setPath("Inventory/Prety/update");
+
+		$newData = [];
+
+		$newData['Item'] = [
+			'itemNumber' => $data['ItemNumber'],
+			'qty'        => $data['qty'],
+		];
+
+		$newData['Type'] = 3; // 3 = set/reset existing qty to new number
+
+		$payload = $this->_generateCreateUpdateDeleteItemPayload($newData);
+
+		return $this->traitUpdate($payload);
 	}
 
 	/**
@@ -91,7 +111,7 @@ class Inventory extends Resource
 			'qty'        => $data['qty'],
 		];
 
-		$newData['Type'] = $data['type'];
+		$newData['Type'] = 2; // 2 = change existing qty by +X or -X
 
 		$payload = $this->_generateCreateUpdateDeleteItemPayload($newData);
 
