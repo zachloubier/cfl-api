@@ -74,7 +74,7 @@ class Inventory extends Resource
 	 */
 	public function create(array $data): array
 	{
-		$this->_setPath("Inventory/Prety/update");
+		$this->_setPath("Inventory/PreQty/update");
 
 		$newData = [];
 
