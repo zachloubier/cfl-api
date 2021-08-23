@@ -10,7 +10,7 @@ use Psr\Http\Message\StreamInterface;
 
 abstract class RestApi implements ApiInterface
 {
-	const TIMEOUT = 15;
+	const TIMEOUT = 30;
 	const RETRY_LIMIT = 4;
 
 	protected $_retries = 0;
