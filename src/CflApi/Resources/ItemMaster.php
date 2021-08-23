@@ -58,17 +58,13 @@ class ItemMaster extends Resource
 	{
 		$data['ItemNumber'] = $identifier;
 
-		// If single item update and data array is not sequential, make it so
-		if (array_keys($data) !== range(0, count($data) - 1))
-			$data = [ $data ];
-
 		$payload = $this->_generateCreateUpdateDeleteItemPayload($data);
 
 		return $this->traitUpdate($payload);
 	}
 
 	/**
-	 * Delete a multiple items in CFL.
+	 * Delete a single item in CFL.
 	 *
 	 * @param string $identifier
 	 *
@@ -99,7 +95,7 @@ class ItemMaster extends Resource
 		return [
 			"RequestID" => $this->_generateRequestId(),
 			"Customer"  => $this->_customerCode,
-			"Item"      => $data,
+			"Item"      => [$data], // CFL expects an array of items, but we're only supporting single item operations
 		];
 	}
 
