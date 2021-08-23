@@ -78,7 +78,7 @@ class Inventory extends Resource
 
 		$newData = [];
 
-		$newData['Item'] = [
+		$newData['Item'][] = [
 			'itemNumber' => $data['ItemNumber'],
 			'qty'        => $data['qty'],
 		];
@@ -87,7 +87,7 @@ class Inventory extends Resource
 
 		$payload = $this->_generateCreateUpdateDeleteItemPayload($newData);
 
-		return $this->traitUpdate($payload);
+		return $this->traitCreate($payload);
 	}
 
 	/**
@@ -106,7 +106,7 @@ class Inventory extends Resource
 
 		$newData = [];
 
-		$newData['Item'] = [
+		$newData['Item'][] = [
 			'itemNumber' => $identifier,
 			'qty'        => $data['qty'],
 		];
@@ -115,7 +115,7 @@ class Inventory extends Resource
 
 		$payload = $this->_generateCreateUpdateDeleteItemPayload($newData);
 
-		return $this->traitUpdate($payload);
+		return $this->traitCreate($payload);
 	}
 
 	/**
