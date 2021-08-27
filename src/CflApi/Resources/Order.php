@@ -62,7 +62,10 @@ class Order extends Resource
 	public function delete(string $orderNumber): array
 	{
 		$this->_setPath("order/${orderNumber}");
-		return $this->traitDelete([]);
+
+		$payload = $this->_generateCreateUpdateDeleteOrderPayload([]);
+
+		return $this->traitDelete($payload);
 	}
 
 	/**
