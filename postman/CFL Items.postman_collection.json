@@ -1,0 +1,111 @@
+{
+	"variables": [],
+	"info": {
+		"name": "CFL Items",
+		"_postman_id": "3dba7e06-418f-0747-0b5c-fa3b9779d872",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Item",
+			"request": {
+				"url": "{{cfl_item_master_url}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cfl_bearer_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"RequestID\": \"CFLTEST_20200722_002\",\n  \"Customer\": \"BETABRAND\",\n  \"Item\": [\n    {\n      \"ItemNumber\": \"ZACH-BK-000M\",\n      \"Status\": \"PREORDER\",\n      \"HSCode\": \"\",\n      \"Description\": \"Test product 1 - M\",\n      \"Size\": \"Medium\",\n      \"Color\": \"Black\"\n    }\n  ]\n}"
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Get Item",
+			"request": {
+				"url": "{{cfl_item_master_url}}/W1543-CH-XXL0",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cfl_bearer_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Update Item",
+			"request": {
+				"url": "{{cfl_item_master_url}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cfl_bearer_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"RequestID\": \"CFLTEST_20200722_002\",\n  \"Customer\": \"BETABRAND\",\n  \"Item\": [\n    {\n      \"ItemNumber\": \"W1543-CH-XXL0\",\n      \"Status\": \"RTWs\",\n      \"HSCode\": \"\",\n      \"Description\": \"Alpine Merino Pants Boot-Cut (Charcoal)-XX-Large\",\n      \"Size\": \"XXL0\",\n      \"Color\": \"Charcoal\"\n    }\n  ]\n}"
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Item",
+			"request": {
+				"url": "{{cfl_item_master_url}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cfl_bearer_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"RequestID\": \"CFLTEST_20200722_002\",\n  \"Customer\": \"BETABRAND\",\n  \"Item\": [\n    {\n      \"ItemNumber\": \"ZACH-BK-000S\",\n      \"Status\": true\n    }\n  ]\n}"
+				},
+				"description": null
+			},
+			"response": []
+		}
+	]
+}

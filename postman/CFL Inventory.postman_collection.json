@@ -1,0 +1,97 @@
+{
+	"variables": [],
+	"info": {
+		"name": "CFL Inventory",
+		"_postman_id": "0efcc8d3-4f24-021d-4ddd-4a8ca8417b9c",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Inventory",
+			"request": {
+				"url": "{{cfl_inventory_url}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cfl_bearer_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get One Item Inventory",
+			"request": {
+				"url": "{{cfl_inventory_url}}/W1543-CH-XXL0,W1543-CH-XXLL,W1543-CH-XL00",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cfl_bearer_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Multiple Item Inventory",
+			"request": {
+				"url": "{{cfl_inventory_url}}/W1543-CH-L000,W1543-CH-L00L,W1543-CH-L00P,W1543-CH-L0SP,W1543-CH-M000,W1543-CH-M00L,W1543-CH-M00P,W1543-CH-M0SP,W1543-CH-S000,W1543-CH-S00L,W1543-CH-S00P,W1543-CH-S0SP,W1543-CH-XL00,W1543-CH-XL0L,W1543-CH-XL0P,W1543-CH-XLSP,W1543-CH-XS00,W1543-CH-XS0P,W1543-CH-XSSP,W1543-CH-XXL0,W1543-CH-XXLL,W1543-CH-XXLP",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cfl_bearer_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set Available Qty",
+			"request": {
+				"url": "{{cfl_inventory_url}}/PreQty/Update",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{cfl_bearer_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"RequestID\":\"CF2020072110001\",\n\t\"Customer\":\"betabrand\",\n\t\"Type\":3,\n\t\"Item\":[\n\t\t{\n\t\t\t\"itemNumber\":\"W1543-CH-XXL0\",\n\t\t\t\"qty\":50\n\t\t}\n\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
