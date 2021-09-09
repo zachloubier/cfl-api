@@ -10,15 +10,14 @@ trait RetrieveCollection
 	public function retrieveCollection(array $identifiers = []): array
 	{
 		if (count($identifiers)) {
-			$params = [
-				$this->getIdentifierKey() => implode(',', $identifiers),
-			];
+			$params = implode(',', $identifiers);
 
-			$response = $this->get($this->_path, $params);
+			$response = $this->get($this->_path . '/' . $params);
 		} else {
 			$response = $this->get($this->_path);
 		}
 
-		return $this->_processResponse($response);
+        return $this->_processResponse($response);
+
 	}
 }
