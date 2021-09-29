@@ -33,6 +33,8 @@ class Order extends Resource
 	 */
 	public function create(array $data): array
 	{
+		$this->_setPath("order");
+
 		$payload = $this->_generateCreateUpdateDeleteOrderPayload($data);
 
 		return $this->traitCreate($payload);
