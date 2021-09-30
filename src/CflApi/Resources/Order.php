@@ -66,6 +66,7 @@ class Order extends Resource
 		$this->_setPath("order/${orderNumber}");
 
 		$payload = $this->_generateCreateUpdateDeleteOrderPayload([]);
+		$payload["RefOrderId"] = $orderNumber;
 
 		return $this->traitDelete($payload);
 	}
